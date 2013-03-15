@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Traffic Fines</string>
-    <string name="menu_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="dummy_fine_name">Fine Name</string>
+    <string name="dummy_fine_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sodales, risus quis dignissim pharetra, lectus lorem bibendum quam, at convallis libero augue tincidunt dolor. Curabitur varius, purus in posuere adipiscing, ante urna vehicula neque, tincidunt tempor est dolor at felis.</string>
+    <string name="dummy_fine_value_high">200k</string>
+    <string name="dummy_fine_value_low">100k</string>
 
 </resources>

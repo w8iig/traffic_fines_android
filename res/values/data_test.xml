@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_test_title">Test</string>
+    <string name="data_test_fine_1_name">Fine 1</string>
+    <string name="data_test_fine_2_name">Fine 2</string>
+    <string name="data_test_fine_3_name">Fine 3</string>
+    <string name="data_test_fine_4_name">Fine 4</string>
+    <string name="data_test_fine_5_name">Fine 5</string>
+    <string name="data_test_fine_6_name">Fine 6</string>
+    <string name="data_test_fine_7_name">Fine 7</string>
+    <string name="data_test_fine_8_name">Fine 8</string>
+    <string name="data_test_fine_9_name">Fine 9</string>
+    <string name="data_test_fine_10_name">Fine 10</string>
+    
+</resources>
