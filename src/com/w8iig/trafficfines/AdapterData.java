@@ -1,8 +1,7 @@
 package com.w8iig.trafficfines;
 
-import java.util.Locale;
-
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,11 @@ import android.widget.TextView;
 
 import com.w8iig.trafficfines.data.DataAbstract;
 import com.w8iig.trafficfines.data.DataAbstract.FineValues;
+import com.w8iig.trafficfines.util.UtilString;
 
 class AdapterData extends ArrayAdapter<Integer> {
+
+	static private final String TAG = "AdapterData";
 
 	private DataAbstract mData;
 
@@ -49,6 +51,7 @@ class AdapterData extends ArrayAdapter<Integer> {
 		}
 
 		if (row == null || holder == null) {
+			Log.e(TAG, String.format("getView: row=%s, holder=%s", row, holder));
 			return null;
 		}
 
@@ -59,6 +62,8 @@ class AdapterData extends ArrayAdapter<Integer> {
 			FineValues value = mData.getFineValue(fineId);
 
 			if (nameResId == 0 || descResId == 0 || value == null) {
+				Log.e(TAG, String.format("getView: nameResId=%s,"
+						+ "descResId=%s,value=%s", nameResId, descResId, value));
 				return null;
 			}
 
@@ -91,13 +96,9 @@ class AdapterData extends ArrayAdapter<Integer> {
 				break;
 			}
 		}
-		
-		double delta = scaled_value - Math.floor(scaled_value);
-		if (delta < 0.1) {
-			return String.format(Locale.US, "%.0f%s", scaled_value, scaled_unit);
-		} else {
-			return String.format(Locale.US, "%.1f%s", scaled_value, scaled_unit);
-		}		
+
+		return String.format("%s%s", UtilString.formatNumber(scaled_value),
+				scaled_unit);
 	}
 
 	private static class ViewHolder {

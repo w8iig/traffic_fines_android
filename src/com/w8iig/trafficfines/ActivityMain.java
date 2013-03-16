@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
 import com.w8iig.trafficfines.data.DataAbstract;
-import com.w8iig.trafficfines.data.DataTest;
+import com.w8iig.trafficfines.data.DataBike;
 
 public class ActivityMain extends SherlockListActivity {
 
@@ -33,9 +33,9 @@ public class ActivityMain extends SherlockListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// TODO: replace with real data
-		DataAbstract data = new DataTest();
-		mSearcher = new Searcher(data);
+		// TODO: replace with data specified via preference
+		DataAbstract data = new DataBike();
+		mSearcher = new Searcher(this, data);
 
 		ListView listView = getListView();
 		mListAdapter = new AdapterData(this, data);

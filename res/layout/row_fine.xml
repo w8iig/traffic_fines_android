@@ -16,20 +16,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="5"
+            android:minLines="2"
             android:text="@string/dummy_fine_name"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/fine_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="3"
-            android:minLines="1"
+            android:maxLines="1"
             android:text="@string/dummy_fine_description"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
     <LinearLayout

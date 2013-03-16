@@ -1,6 +1,9 @@
 package com.w8iig.trafficfines.data;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.w8iig.trafficfines.util.UtilString;
 
 public abstract class DataAbstract {
 
@@ -14,7 +17,18 @@ public abstract class DataAbstract {
 
 	public abstract int[] getValuePairs();
 
-	public abstract String[] getSearchTexts();
+	public String[] getSearchTexts(Context context) {
+		int[] nameResIds = getNameResIds();
+		String[] searchTexts = new String[nameResIds.length];
+
+		for (int i = 0; i < nameResIds.length; i++) {
+			// TODO: try catch for Resources.NotFoundException?
+			String name = context.getString(nameResIds[i]);
+			searchTexts[i] = UtilString.toLowerCaseAndRemoveAccents(name);
+		}
+
+		return searchTexts;
+	}
 
 	public int getFineNameResId(int fineId) {
 		int[] resIds = getNameResIds();
@@ -90,7 +104,7 @@ public abstract class DataAbstract {
 	public static class FineValues {
 		int low;
 		int high;
-		
+
 		public int getLow() {
 			return low;
 		}
