@@ -32,7 +32,11 @@ def parse(toml_path, java_root_package, java_class, res_name):
     output_res +='\t<string name="%s_title">%s</string>\n' % (res_name, title);
     
     is_first = True
-    for fine_id in fines:
+    fine_ids = sorted(fines.keys())
+    for fine_id in fine_ids:
+        if (fine_id == 'test'):
+            continue
+        
         # parsing the fine values
         value_low = 0
         value_high = 0
