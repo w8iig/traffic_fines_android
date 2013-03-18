@@ -10,6 +10,8 @@ public abstract class DataAbstract {
 	static private final String TAG = "DataAbstract";
 
 	public abstract int getTitleResId();
+	
+	public abstract String[] getUniqueIds();
 
 	public abstract int[] getNameResIds();
 
@@ -28,6 +30,25 @@ public abstract class DataAbstract {
 		}
 
 		return searchTexts;
+	}
+	
+	public String getFineUniqueId(int fineId) {
+		String[] uniqueIds = getUniqueIds();
+		String uniqueId = null;
+		
+		if (uniqueIds != null) {
+			if (fineId >= 0 && fineId < uniqueIds.length) {
+				uniqueId = uniqueIds[fineId];
+			} else {
+				Log.e(TAG, String.format("getFineUniqueId -> "
+						+ "fineId invalid: %d (uniqueIds.length=%d)", fineId,
+						uniqueIds.length));
+			}
+		} else {
+			Log.e(TAG, "getFineUniqueId -> resIds=null");
+		}
+		
+		return uniqueId;
 	}
 
 	public int getFineNameResId(int fineId) {

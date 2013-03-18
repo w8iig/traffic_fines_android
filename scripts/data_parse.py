@@ -22,6 +22,8 @@ def parse(toml_path, java_root_package, java_class, res_name):
     # implement DataAbstract::getTitleResId
     output_java += u'\n\t@Override\n\tpublic int getTitleResId() {\n\t\treturn R.string.%s_title;\n\t}\n' % (res_name)
 
+    # start implementing DataAbstract::getUniqueIds()
+    output_java_getUniqueIds = u'\n\t@Override\n\tpublic String[] getUniqueIds() {\n\t\treturn new String[] {\n'
     # start implementing DataAbstract::getNameResIds()
     output_java_getNameResIds = u'\n\t@Override\n\tpublic int[] getNameResIds() {\n\t\treturn new int[] {\n'
     # start implementing DataAbstract::getDescriptionResIds()
@@ -50,7 +52,9 @@ def parse(toml_path, java_root_package, java_class, res_name):
                 value_high = helper.helper_int(re_match.group(2))
             else:
                 value_high = helper.helper_int(fine_value)
-        
+
+        # implementing DataAbstract::getUniqueIds()
+        output_java_getUniqueIds += u'%s\t\t\t"%s"' % (('' if is_first else ',\n'), fine_id)        
         # implementing DataAbstract::getNameResIds()
         output_java_getNameResIds += u'%s\t\t\tR.string.%s_%s_name' % (('' if is_first else ',\n'), res_name, fine_id)
         # implementing DataAbstract::getDescriptionResIds()
@@ -65,6 +69,8 @@ def parse(toml_path, java_root_package, java_class, res_name):
         
         is_first = False
 
+    # finish implementing DataAbstract::getUniqueIds()
+    output_java += u'%s\n\t\t};\n\t}\n' % (output_java_getUniqueIds)
     # finish implementing DataAbstract::getNameResIds()
     output_java += u'%s\n\t\t};\n\t}\n' % (output_java_getNameResIds)
     # finish implementing DataAbstract::getDescriptionResIds()

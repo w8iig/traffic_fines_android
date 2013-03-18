@@ -42,6 +42,11 @@ class AdapterData extends ArrayAdapter<Integer> {
 	}
 
 	@Override
+	public long getItemId(int position) {
+		return getItem(position);
+	}
+
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = null;
 		ViewHolder holder = null;
@@ -51,14 +56,14 @@ class AdapterData extends ArrayAdapter<Integer> {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.row_fine, parent, false);
 			holder = new ViewHolder();
-			holder.cbMark = (CheckBox) row.findViewById(R.id.fine_mark);
-			holder.txtName = (TextView) row.findViewById(R.id.fine_name);
+			holder.cbMark = (CheckBox) row.findViewById(R.id.cb_fine_mark);
+			holder.txtName = (TextView) row.findViewById(R.id.txt_fine_name);
 			holder.txtDescription = (TextView) row
-					.findViewById(R.id.fine_description);
+					.findViewById(R.id.txt_fine_description);
 			holder.txtValueHigh = (TextView) row
-					.findViewById(R.id.fine_value_high);
+					.findViewById(R.id.txt_fine_value_high);
 			holder.txtValueLow = (TextView) row
-					.findViewById(R.id.fine_value_low);
+					.findViewById(R.id.txt_fine_value_low);
 			row.setTag(holder);
 
 			holder.cbMark.setOnCheckedChangeListener(mMarklistener);
@@ -75,7 +80,7 @@ class AdapterData extends ArrayAdapter<Integer> {
 			return null;
 		}
 
-		Integer fineId = getItem(position);
+		Integer fineId = Integer.valueOf((int) getItemId(position));
 		if (mData != null) {
 			int nameResId = mData.getFineNameResId(fineId);
 			int descResId = mData.getFineDescriptionResId(fineId);

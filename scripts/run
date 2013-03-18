@@ -1,1 +1,2 @@
 python scripts/data_parse.py
+python scripts/docs_parse.py

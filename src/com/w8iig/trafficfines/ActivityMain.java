@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
@@ -16,13 +20,15 @@ import com.actionbarsherlock.widget.SearchView;
 import com.w8iig.trafficfines.data.DataAbstract;
 import com.w8iig.trafficfines.data.DataBike;
 
-public class ActivityMain extends SherlockListActivity {
+public class ActivityMain extends SherlockListActivity implements
+		OnItemClickListener {
 
 	static private final String TAG = "ActivityMain";
 
 	private Handler mHandler = new Handler();
 	private SearchView mSearchView;
 
+	private DataAbstract mData;
 	private AdapterData mListAdapter;
 	private Searcher mSearcher;
 	private String mSearchQueryPending;
@@ -34,12 +40,13 @@ public class ActivityMain extends SherlockListActivity {
 		setContentView(R.layout.activity_main);
 
 		// TODO: replace with data specified via preference
-		DataAbstract data = new DataBike();
-		mSearcher = new Searcher(this, data);
+		mData = new DataBike();
+		mSearcher = new Searcher(this, mData);
 
 		ListView listView = getListView();
-		mListAdapter = new AdapterData(this, data);
+		mListAdapter = new AdapterData(this, mData);
 		listView.setAdapter(mListAdapter);
+		listView.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -66,7 +73,7 @@ public class ActivityMain extends SherlockListActivity {
 			};
 			mSearchView.setOnQueryTextListener(queryTextListener);
 		} else {
-			Log.e(TAG, "searchView == null");
+			Log.e(TAG, "onCreateOptionsMenu: searchView=null");
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -76,20 +83,41 @@ public class ActivityMain extends SherlockListActivity {
 	protected void onResume() {
 		super.onResume();
 
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (mSearchView != null) {
-					// automatically expand the search view
-					// we can use setIconifiedByDefault upon initialization
-					// but the widget looks ugly that way...
-					mSearchView.setIconified(false);
+		if (mListAdapter.getCount() == 0) {
+			mHandler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (mSearchView != null) {
+						// automatically expand the search view when there is
+						// nothing to show (on a cold start or similar)
+						// we can use setIconifiedByDefault upon initialization
+						// but the widget looks ugly that way...
+						mSearchView.setIconified(false);
+					}
 				}
-			}
-		}, 100);
+			}, 100);
+		}
 
 		mSearchQueryPending = null;
 		mSearchTask = null;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> listView, View view, int position,
+			long fineId) {
+		if (listView == getListView()) {
+			listView.requestFocus();
+			
+			if (mData == null) {
+				Log.w(TAG, "onItemClick: mData=null");
+			}
+
+			String fineUniqueId = mData.getFineUniqueId((int) fineId);
+
+			Intent intentDoc = new Intent(this, ActivityDoc.class);
+			intentDoc.putExtra(ActivityDoc.EXTRA_FINE_UNIQUE_ID, fineUniqueId);
+			startActivity(intentDoc);
+		}
 	}
 
 	private synchronized void performSearch(String query) {
