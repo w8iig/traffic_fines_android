@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -103,11 +105,40 @@ class AdapterData extends ArrayAdapter<Integer> {
 				holder.txtValueHigh.setText(formatValue(value.getHigh()));
 				holder.txtValueLow.setText("");
 			}
+			// expand the hit target of the mark checkbox
+			// it's the little thing...
+			expandHitTarget(row, holder.cbMark);
 		} else {
 			Log.e(TAG, "getView: mData=null");
 		}
 
 		return row;
+	}
+
+	static private void expandHitTarget(final View row, final View checkBox) {
+		row.post(new Runnable() {
+			@Override
+			public void run() {
+				Rect rect = new Rect();
+				checkBox.getHitRect(rect);
+
+				// the rect is set with the assumption that the checkbox is on
+				// the top left position and there is nothing below it:
+				// +---+---------------
+				// | X | Text..
+				// +---+ More text..
+				// |   |
+				// .   .
+				// .   .
+				// +---+---------------
+				rect.top = 0;
+				// try to make a square hit target but do not exceed a quarter of the row width
+				rect.right = Math.min(row.getHeight(), row.getWidth() / 4);
+				rect.bottom = row.getHeight();
+				rect.left = 0;
+				row.setTouchDelegate(new TouchDelegate(rect, checkBox));
+			}
+		});
 	}
 
 	private String formatValue(int value) {
