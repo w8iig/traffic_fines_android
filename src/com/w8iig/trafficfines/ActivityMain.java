@@ -141,8 +141,12 @@ public class ActivityMain extends SherlockListActivity {
 		protected List<Integer> doInBackground(Void... arg0) {
 			if (mQuery != null && mQuery.isEmpty()) {
 				// special case for empty query
-				// simply return empty list
-				return new ArrayList<Integer>();
+				// simply return the marked list if possible
+				if (mListAdapter != null) {
+					return mListAdapter.getMarkedFineIds();
+				} else {
+					return new ArrayList<Integer>();
+				}
 			}
 
 			if (mSearcher != null) {

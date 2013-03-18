@@ -1,11 +1,19 @@
 package com.w8iig.trafficfines;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.w8iig.trafficfines.data.DataAbstract;
@@ -17,11 +25,20 @@ class AdapterData extends ArrayAdapter<Integer> {
 	static private final String TAG = "AdapterData";
 
 	private DataAbstract mData;
+	private List<Integer> mMarked;
+	private OnCheckedChangeListener mMarklistener;
 
 	public AdapterData(Context context, DataAbstract data) {
 		super(context, 0);
 
 		mData = data;
+
+		mMarked = new ArrayList<Integer>();
+		mMarklistener = new MarkOnCheckedChangeListener();
+	}
+
+	public List<Integer> getMarkedFineIds() {
+		return Collections.unmodifiableList(mMarked);
 	}
 
 	@Override
@@ -34,6 +51,7 @@ class AdapterData extends ArrayAdapter<Integer> {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.row_fine, parent, false);
 			holder = new ViewHolder();
+			holder.cbMark = (CheckBox) row.findViewById(R.id.fine_mark);
 			holder.txtName = (TextView) row.findViewById(R.id.fine_name);
 			holder.txtDescription = (TextView) row
 					.findViewById(R.id.fine_description);
@@ -42,6 +60,8 @@ class AdapterData extends ArrayAdapter<Integer> {
 			holder.txtValueLow = (TextView) row
 					.findViewById(R.id.fine_value_low);
 			row.setTag(holder);
+
+			holder.cbMark.setOnCheckedChangeListener(mMarklistener);
 		} else {
 			row = convertView;
 			Object tag = row.getTag();
@@ -67,6 +87,8 @@ class AdapterData extends ArrayAdapter<Integer> {
 				return null;
 			}
 
+			holder.fineId = fineId;
+			holder.cbMark.setChecked(mMarked.contains(Integer.valueOf(fineId)));
 			holder.txtName.setText(nameResId);
 			holder.txtDescription.setText(descResId);
 			if (value.isRange()) {
@@ -76,6 +98,8 @@ class AdapterData extends ArrayAdapter<Integer> {
 				holder.txtValueHigh.setText(formatValue(value.getHigh()));
 				holder.txtValueLow.setText("");
 			}
+		} else {
+			Log.e(TAG, "getView: mData=null");
 		}
 
 		return row;
@@ -101,10 +125,34 @@ class AdapterData extends ArrayAdapter<Integer> {
 				scaled_unit);
 	}
 
-	private static class ViewHolder {
+	static private class ViewHolder {
+		private int fineId;
+		private CheckBox cbMark;
 		private TextView txtName;
 		private TextView txtDescription;
 		private TextView txtValueHigh;
 		private TextView txtValueLow;
+	}
+
+	private class MarkOnCheckedChangeListener implements
+			OnCheckedChangeListener {
+		@Override
+		public void onCheckedChanged(CompoundButton view, boolean checked) {
+			ViewParent parent = view.getParent();
+			if (parent instanceof View) {
+				Object tag = ((View) parent).getTag();
+				if (tag instanceof ViewHolder) {
+					Integer fineId = Integer.valueOf(((ViewHolder) tag).fineId);
+
+					if (checked) {
+						if (!mMarked.contains(fineId)) {
+							mMarked.add(fineId);
+						}
+					} else {
+						mMarked.remove(fineId);
+					}
+				}
+			}
+		}
 	}
 }
