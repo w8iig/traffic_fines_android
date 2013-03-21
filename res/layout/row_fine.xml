@@ -3,65 +3,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingBottom="5dip"
+    android:paddingTop="5dip" >
 
     <CheckBox
         android:id="@+id/cb_fine_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:focusable="false"
-         />
+        android:focusable="false" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txt_fine_name"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/txt_fine_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="5"
-            android:minLines="2"
-            android:text="@string/dummy_fine_name"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/txt_fine_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/dummy_fine_description"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-    </LinearLayout>
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="@string/dummy_fine_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dip"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/txt_fine_value_high"
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_fine_value"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:maxLines="1"
-            android:text="@string/dummy_fine_value_high"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:drawableLeft="@drawable/ic_money_bag"
+            android:drawablePadding="3dip"
+            android:lines="1"
+            android:text="@string/dummy_fine_value"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/txt_fine_value_low"
+            android:id="@+id/txt_fine_license_days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:maxLines="1"
-            android:text="@string/dummy_fine_value_low"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:drawableLeft="@drawable/ic_id_card"
+            android:drawablePadding="3dip"
+            android:lines="1"
+            android:text="@string/dummy_fine_license_days"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/txt_fine_vehicle_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_lock"
+            android:drawablePadding="3dip"
+            android:lines="1"
+            android:text="@string/dummy_fine_vehicle_days"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
 </LinearLayout>

@@ -60,12 +60,11 @@ class AdapterData extends ArrayAdapter<Integer> {
 			holder = new ViewHolder();
 			holder.cbMark = (CheckBox) row.findViewById(R.id.cb_fine_mark);
 			holder.txtName = (TextView) row.findViewById(R.id.txt_fine_name);
-			holder.txtDescription = (TextView) row
-					.findViewById(R.id.txt_fine_description);
-			holder.txtValueHigh = (TextView) row
-					.findViewById(R.id.txt_fine_value_high);
-			holder.txtValueLow = (TextView) row
-					.findViewById(R.id.txt_fine_value_low);
+			holder.txtValue = (TextView) row.findViewById(R.id.txt_fine_value);
+			holder.txtLicenseDays = (TextView) row
+					.findViewById(R.id.txt_fine_license_days);
+			holder.txtVehicleDays = (TextView) row
+					.findViewById(R.id.txt_fine_vehicle_days);
 			row.setTag(holder);
 
 			holder.cbMark.setOnCheckedChangeListener(mMarklistener);
@@ -85,26 +84,43 @@ class AdapterData extends ArrayAdapter<Integer> {
 		Integer fineId = Integer.valueOf((int) getItemId(position));
 		if (mData != null) {
 			int nameResId = mData.getFineNameResId(fineId);
-			int descResId = mData.getFineDescriptionResId(fineId);
 			FineValues value = mData.getFineValue(fineId);
+			int licenseDays = mData.getLicenseDays(fineId);
+			int vehicleDays = mData.getVehicleDay(fineId);
 
-			if (nameResId == 0 || descResId == 0 || value == null) {
-				Log.e(TAG, String.format("getView: nameResId=%s,"
-						+ "descResId=%s,value=%s", nameResId, descResId, value));
+			if (nameResId == 0 || value == null) {
+				Log.e(TAG, String.format("getView: nameResId=%s," + "value=%s",
+						nameResId, value));
 				return null;
 			}
 
 			holder.fineId = fineId;
 			holder.cbMark.setChecked(mMarked.contains(Integer.valueOf(fineId)));
 			holder.txtName.setText(nameResId);
-			holder.txtDescription.setText(descResId);
-			if (value.isRange()) {
-				holder.txtValueHigh.setText(formatValue(value.getHigh()));
-				holder.txtValueLow.setText(formatValue(value.getLow()));
+			holder.txtValue.setText(formatValue(value.getHigh()));
+
+			if (licenseDays >= 9999) {
+				holder.txtLicenseDays.setVisibility(View.VISIBLE);
+				holder.txtLicenseDays.setText(R.string.fine_9999_days);
+			} else if (licenseDays > 0) {
+				holder.txtLicenseDays.setVisibility(View.VISIBLE);
+				holder.txtLicenseDays.setText(UtilString
+						.formatNumber(licenseDays));
 			} else {
-				holder.txtValueHigh.setText(formatValue(value.getHigh()));
-				holder.txtValueLow.setText("");
+				holder.txtLicenseDays.setVisibility(View.GONE);
 			}
+
+			if (vehicleDays >= 9999) {
+				holder.txtVehicleDays.setVisibility(View.VISIBLE);
+				holder.txtVehicleDays.setText(R.string.fine_9999_days);
+			} else if (vehicleDays > 0) {
+				holder.txtVehicleDays.setVisibility(View.VISIBLE);
+				holder.txtVehicleDays.setText(UtilString
+						.formatNumber(vehicleDays));
+			} else {
+				holder.txtVehicleDays.setVisibility(View.GONE);
+			}
+
 			// expand the hit target of the mark checkbox
 			// it's the little thing...
 			expandHitTarget(row, holder.cbMark);
@@ -127,12 +143,13 @@ class AdapterData extends ArrayAdapter<Integer> {
 				// +---+---------------
 				// | X | Text..
 				// +---+ More text..
-				// |   |
-				// .   .
-				// .   .
+				// | |
+				// . .
+				// . .
 				// +---+---------------
 				rect.top = 0;
-				// try to make a square hit target but do not exceed a quarter of the row width
+				// try to make a square hit target but do not exceed a quarter
+				// of the row width
 				rect.right = Math.min(row.getHeight(), row.getWidth() / 4);
 				rect.bottom = row.getHeight();
 				rect.left = 0;
@@ -165,9 +182,9 @@ class AdapterData extends ArrayAdapter<Integer> {
 		private int fineId;
 		private CheckBox cbMark;
 		private TextView txtName;
-		private TextView txtDescription;
-		private TextView txtValueHigh;
-		private TextView txtValueLow;
+		private TextView txtValue;
+		private TextView txtLicenseDays;
+		private TextView txtVehicleDays;
 	}
 
 	private class MarkOnCheckedChangeListener implements

@@ -30,6 +30,10 @@ def parse(toml_path, java_root_package, java_class, res_name):
     output_java_getDescriptionResIds = u'\n\t@Override\n\tpublic int[] getDescriptionResIds() {\n\t\treturn new int[] {\n'
     # start implementing DataAbstract::getValuePairs()
     output_java_getValuePairs = u'\n\t@Override\n\tpublic int[] getValuePairs() {\n\t\treturn new int[] {\n'
+    # start implementing DataAbstract::getLicenseDays()
+    output_java_getLicenseDays = u'\n\t@Override\n\tpublic int[] getLicenseDays() {\n\t\treturn new int[] {\n'
+    # start implementing DataAbstract::getVehicleDays()
+    output_java_getVehicleDays = u'\n\t@Override\n\tpublic int[] getVehicleDays() {\n\t\treturn new int[] {\n'
     
     # prepare resource XML header
     output_res = u'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n'
@@ -53,6 +57,15 @@ def parse(toml_path, java_root_package, java_class, res_name):
             else:
                 value_high = helper.helper_int(fine_value)
 
+        # parsing license days
+        license_days = 0
+        if fines[fine_id].has_key('license_days'):
+            license_days = helper.helper_int(fines[fine_id]['license_days'])
+        # parsing vehicle days
+        vehicle_days = 0
+        if fines[fine_id].has_key('vehicle_days'):
+            vehicle_days = helper.helper_int(fines[fine_id]['vehicle_days'])
+
         # implementing DataAbstract::getUniqueIds()
         output_java_getUniqueIds += u'%s\t\t\t"%s"' % (('' if is_first else ',\n'), fine_id)        
         # implementing DataAbstract::getNameResIds()
@@ -61,6 +74,10 @@ def parse(toml_path, java_root_package, java_class, res_name):
         output_java_getDescriptionResIds += u'%s\t\t\tR.string.%s_%s_description' % (('' if is_first else ',\n'), res_name, fine_id)
         # implementing DataAbstract::getValuePairs()
         output_java_getValuePairs += u'%s\t\t\t// %s\n\t\t\t%d, %d' % (('' if is_first else ',\n'), fine_id, value_low, value_high)
+        # implementing DataAbstract::getLicenseDays()
+        output_java_getLicenseDays += u'%s\t\t\t// %s\n\t\t\t%d' % (('' if is_first else ',\n'), fine_id, license_days)
+        # implementing DataAbstract::getVehicleDays()
+        output_java_getVehicleDays += u'%s\t\t\t// %s\n\t\t\t%d' % (('' if is_first else ',\n'), fine_id, vehicle_days)
         
         # prepare string for name
         output_res += u'\t<string name="%s_%s_name">%s</string>\n' % (res_name, fine_id, unicode(fines[fine_id]['name'], 'utf-8'));
@@ -77,6 +94,10 @@ def parse(toml_path, java_root_package, java_class, res_name):
     output_java += u'%s\n\t\t};\n\t}\n' % (output_java_getDescriptionResIds)
     # finish implementing DataAbstract::getValuePairs()
     output_java += u'%s\n\t\t};\n\t}\n' % (output_java_getValuePairs)
+    # finish implementing DataAbstract::getLicenseDays()
+    output_java += u'%s\n\t\t};\n\t}\n' % (output_java_getLicenseDays)
+    # finish implementing DataAbstract::getVehicleDays()
+    output_java += u'%s\n\t\t};\n\t}\n' % (output_java_getVehicleDays)
     
     # final closing brace for java class
     output_java += u'}'

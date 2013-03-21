@@ -4,7 +4,10 @@
     <string name="app_name">Traffic Fines</string>
     <string name="dummy_fine_name">Fine Name</string>
     <string name="dummy_fine_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sodales, risus quis dignissim pharetra, lectus lorem bibendum quam, at convallis libero augue tincidunt dolor. Curabitur varius, purus in posuere adipiscing, ante urna vehicula neque, tincidunt tempor est dolor at felis.</string>
-    <string name="dummy_fine_value_high">200k</string>
-    <string name="dummy_fine_value_low">100k</string>
+    <string name="dummy_fine_value">999k</string>
+    <string name="dummy_fine_license_days">999</string>
+    <string name="dummy_fine_vehicle_days">999</string>
+    
+    <string name="fine_9999_days">∞</string>
 
 </resources>

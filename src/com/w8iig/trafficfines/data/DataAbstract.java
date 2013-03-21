@@ -10,7 +10,7 @@ public abstract class DataAbstract {
 	static private final String TAG = "DataAbstract";
 
 	public abstract int getTitleResId();
-	
+
 	public abstract String[] getUniqueIds();
 
 	public abstract int[] getNameResIds();
@@ -18,6 +18,10 @@ public abstract class DataAbstract {
 	public abstract int[] getDescriptionResIds();
 
 	public abstract int[] getValuePairs();
+
+	public abstract int[] getLicenseDays();
+
+	public abstract int[] getVehicleDays();
 
 	public String[] getSearchTexts(Context context) {
 		int[] nameResIds = getNameResIds();
@@ -31,11 +35,11 @@ public abstract class DataAbstract {
 
 		return searchTexts;
 	}
-	
+
 	public String getFineUniqueId(int fineId) {
 		String[] uniqueIds = getUniqueIds();
 		String uniqueId = null;
-		
+
 		if (uniqueIds != null) {
 			if (fineId >= 0 && fineId < uniqueIds.length) {
 				uniqueId = uniqueIds[fineId];
@@ -47,7 +51,7 @@ public abstract class DataAbstract {
 		} else {
 			Log.e(TAG, "getFineUniqueId -> resIds=null");
 		}
-		
+
 		return uniqueId;
 	}
 
@@ -115,11 +119,41 @@ public abstract class DataAbstract {
 	}
 
 	public int getLicenseDays(int fineId) {
-		return 0;
+		int[] data = getLicenseDays();
+		int days = 0;
+
+		if (data != null) {
+			if (fineId >= 0 && fineId < data.length) {
+				days = data[fineId];
+			} else {
+				Log.e(TAG, String.format("getLicenseDays -> "
+						+ "fineId invalid: %d (data.length=%d", fineId,
+						data.length));
+			}
+		} else {
+			Log.e(TAG, "getLicenseDays -> data=null");
+		}
+
+		return days;
 	}
 
 	public int getVehicleDay(int fineId) {
-		return 0;
+		int[] data = getVehicleDays();
+		int days = 0;
+
+		if (data != null) {
+			if (fineId >= 0 && fineId < data.length) {
+				days = data[fineId];
+			} else {
+				Log.e(TAG, String.format("getVehicleDay -> "
+						+ "fineId invalid: %d (data.length=%d", fineId,
+						data.length));
+			}
+		} else {
+			Log.e(TAG, "getVehicleDay -> data=null");
+		}
+
+		return days;
 	}
 
 	public static class FineValues {
